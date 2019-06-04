@@ -10,7 +10,7 @@
 	<name>Spring Boot Build</name>
 	<description>Spring Boot Build</description>
 	<properties>
-		<revision>2.1.5.RELEASE</revision>
+		<revision>2.1.5.RELEASE.cui01</revision>
 		<main.basedir>${basedir}</main.basedir>
 	</properties>
 	<!-- Most elements are in profiles so they are stripped out during maven-flatten -->
@@ -28,7 +28,7 @@
 			</properties>
 			<build>
 				<plugins>
-					<plugin>
+					<!--<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
 						<version>3.0.0</version>
@@ -76,7 +76,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin>-->
 				</plugins>
 			</build>
 			<modules>

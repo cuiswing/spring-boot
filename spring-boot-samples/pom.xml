@@ -18,7 +18,7 @@
 		<disable.checks>false</disable.checks>
 	</properties>
 	<modules>
-		<module>spring-boot-sample-ant</module>
+		<!--<module>spring-boot-sample-ant</module>
 		<module>spring-boot-sample-activemq</module>
 		<module>spring-boot-sample-actuator</module>
 		<module>spring-boot-sample-actuator-log4j2</module>
@@ -100,7 +100,7 @@
 		<module>spring-boot-sample-websocket-tomcat</module>
 		<module>spring-boot-sample-websocket-undertow</module>
 		<module>spring-boot-sample-webservices</module>
-		<module>spring-boot-sample-xml</module>
+		<module>spring-boot-sample-xml</module>-->
 	</modules>
 	<!-- No dependencies - otherwise the samples won't work if you change the
 		parent -->

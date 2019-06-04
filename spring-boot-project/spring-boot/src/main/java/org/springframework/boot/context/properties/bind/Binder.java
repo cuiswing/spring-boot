@@ -97,8 +97,7 @@ public class Binder {
 	 * @param sources the sources used for binding
 	 * @param placeholdersResolver strategy to resolve any property placeholders
 	 */
-	public Binder(Iterable<ConfigurationPropertySource> sources,
-			PlaceholdersResolver placeholdersResolver) {
+	public Binder(Iterable<ConfigurationPropertySource> sources, PlaceholdersResolver placeholdersResolver) {
 		this(sources, placeholdersResolver, null, null);
 	}
 

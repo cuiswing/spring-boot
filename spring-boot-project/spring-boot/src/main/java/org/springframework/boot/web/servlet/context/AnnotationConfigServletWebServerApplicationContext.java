@@ -70,7 +70,9 @@ public class AnnotationConfigServletWebServerApplicationContext
 	 * {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigServletWebServerApplicationContext() {
+		// 实例化注解bean定义读取器
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+		// 实例化类路径bean定义扫描器
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -122,7 +124,9 @@ public class AnnotationConfigServletWebServerApplicationContext
 	@Override
 	public void setEnvironment(ConfigurableEnvironment environment) {
 		super.setEnvironment(environment);
+		// 实例化context的reader属性的conditionEvaluator属性
 		this.reader.setEnvironment(environment);
+		// 设置context的scanner属性的environment属性
 		this.scanner.setEnvironment(environment);
 	}
 

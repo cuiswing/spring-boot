@@ -29,19 +29,19 @@ public enum WebApplicationType {
 
 	/**
 	 * The application should not run as a web application and should not start an
-	 * embedded web server.
+	 * embedded web server. 非 WEB 项目
 	 */
 	NONE,
 
 	/**
 	 * The application should run as a servlet-based web application and should start an
-	 * embedded servlet web server.
+	 * embedded servlet web server. SERVLET WEB 项目
 	 */
 	SERVLET,
 
 	/**
 	 * The application should run as a reactive web application and should start an
-	 * embedded reactive web server.
+	 * embedded reactive web server. 响应式 WEB 项目
 	 */
 	REACTIVE;
 
@@ -60,17 +60,21 @@ public enum WebApplicationType {
 
 	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
 
+	// 推断SpringBoot中的应用类型
 	static WebApplicationType deduceFromClasspath() {
+		//REACTIVE_WEB_ENVIRONMENT_CLASS可加载且MVC_WEB_ENVIRONMENT_CLASS和JERSEY_WEB_ENVIRONMENT_CLASS不能加载,则为响应式web应用
 		if (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, null)
 				&& !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, null)
 				&& !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, null)) {
 			return WebApplicationType.REACTIVE;
 		}
+		//Servlet和ConfigurableWebApplicationContext不能加载则为非web应用类型
 		for (String className : SERVLET_INDICATOR_CLASSES) {
 			if (!ClassUtils.isPresent(className, null)) {
 				return WebApplicationType.NONE;
 			}
 		}
+		//排除上述两种类型,推断当前应用为servlet类型
 		return WebApplicationType.SERVLET;
 	}
 

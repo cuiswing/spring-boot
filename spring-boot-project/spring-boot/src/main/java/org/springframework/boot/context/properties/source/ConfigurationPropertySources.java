@@ -70,15 +70,19 @@ public final class ConfigurationPropertySources {
 	 * @see #get(Environment)
 	 */
 	public static void attach(Environment environment) {
+		// 判断environment是否是ConfigurableEnvironment的实例
 		Assert.isInstanceOf(ConfigurableEnvironment.class, environment);
-		MutablePropertySources sources = ((ConfigurableEnvironment) environment)
-				.getPropertySources();
+		MutablePropertySources sources = ((ConfigurableEnvironment) environment).getPropertySources();
 		PropertySource<?> attached = sources.get(ATTACHED_PROPERTY_SOURCE_NAME);
 		if (attached != null && attached.getSource() != sources) {
 			sources.remove(ATTACHED_PROPERTY_SOURCE_NAME);
 			attached = null;
 		}
 		if (attached == null) {
+			// 将sources封装成ConfigurationPropertySourcesPropertySource对象，并把这个对象放到sources的第一位置
+			// SpringConfigurationPropertySources是一个将MutablePropertySources转换成ConfigurationPropertySources的适配器。
+			// 这就相当于sources的第一个元素是它自己，形成了一个自己对自己的递归依赖，
+			// 这么做的目的是什么，暂时还不得而知，也许后面会有所体现，这里先留一个疑问。todo
 			sources.addFirst(new ConfigurationPropertySourcesPropertySource(
 					ATTACHED_PROPERTY_SOURCE_NAME,
 					new SpringConfigurationPropertySources(sources)));
@@ -96,8 +100,7 @@ public final class ConfigurationPropertySources {
 	 */
 	public static Iterable<ConfigurationPropertySource> get(Environment environment) {
 		Assert.isInstanceOf(ConfigurableEnvironment.class, environment);
-		MutablePropertySources sources = ((ConfigurableEnvironment) environment)
-				.getPropertySources();
+		MutablePropertySources sources = ((ConfigurableEnvironment) environment).getPropertySources();
 		ConfigurationPropertySourcesPropertySource attached = (ConfigurationPropertySourcesPropertySource) sources
 				.get(ATTACHED_PROPERTY_SOURCE_NAME);
 		if (attached == null) {
