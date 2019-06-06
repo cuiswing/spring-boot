@@ -70,7 +70,7 @@ public class AnnotationConfigServletWebServerApplicationContext
 	 * {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigServletWebServerApplicationContext() {
-		// 实例化注解bean定义读取器
+		// 实例化注解bean定义读取器，这里是个重要节点，实例化了Annotation bean的读取器，这里向beanFactory中注册了5个BeanDefinition，包括：ConfigurationClassPostProcessor
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		// 实例化类路径bean定义扫描器
 		this.scanner = new ClassPathBeanDefinitionScanner(this);

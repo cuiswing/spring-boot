@@ -22,6 +22,16 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
+ * SpringApplicationRunListener看名字也知道用于监听SpringApplication的run方法的执行。
+ * 它定义了7个步骤：
+ * 1、starting(run方法启动的时候执行；对应事件的类型是：ApplicationStartingEvent)
+ * 2、environmentPrepared(ApplicationContext创建之前并且环境信息准备好之后调用；对应事件的类型是 ApplicationEnvironmentPreparedEvent)
+ * 3、contextPrepared(ApplicationContext创建好并且在source加载之前调用一次；事件类型：ApplicationContextInitializedEvent )
+ * 4、contextLoaded(ApplicationContext创建并加载之后并在refresh之前调用；对应事件类型：ApplicationPreparedEvent)
+ * 5、started（上下文已被刷新，并且应用程序已启动后调用，事件类型：ApplicationStartedEvent）
+ * 6、failed：启动失败了，事件：ApplicationFailedEvent
+ * 7、running(run方法结束之前调用；对应事件的类型是ApplicationReadyEvent)
+ * <p>
  * Listener for the {@link SpringApplication} {@code run} method.
  * {@link SpringApplicationRunListener}s are loaded via the {@link SpringFactoriesLoader}
  * and should declare a public constructor that accepts a {@link SpringApplication}

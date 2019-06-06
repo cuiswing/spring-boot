@@ -46,6 +46,10 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 设计模式：facade
+ * 从xml或Annotation中加载bean
+ * 当使用javaConfig的方式进行配置的时候使用的是AnnotatedBeanDefinitionReader，调用了register方法
+ * <p>
  * Loads bean definitions from underlying sources, including XML and JavaConfig. Acts as a
  * simple facade over {@link AnnotatedBeanDefinitionReader},
  * {@link XmlBeanDefinitionReader} and {@link ClassPathBeanDefinitionScanner}. See
@@ -78,6 +82,7 @@ class BeanDefinitionLoader {
 		Assert.notNull(registry, "Registry must not be null");
 		Assert.notEmpty(sources, "Sources must not be empty");
 		this.sources = sources;
+		// 这个就是读取注解的reader
 		this.annotatedReader = new AnnotatedBeanDefinitionReader(registry);
 		this.xmlReader = new XmlBeanDefinitionReader(registry);
 		if (isGroovyPresent()) {
@@ -154,6 +159,7 @@ class BeanDefinitionLoader {
 					GroovyBeanDefinitionSource.class);
 			load(loader);
 		}
+		// 传入的是class，使用annotatedReader来注册bean
 		if (isComponent(source)) {
 			this.annotatedReader.register(source);
 			return 1;

@@ -261,6 +261,9 @@ public class SpringApplication {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
+		logger.debug("第一步：new SpringApplication，初始化一些资源，设置各个字段属性值。" +
+				"属性：resourceLoader、primarySources、webApplicationType、mainApplicationClass" +
+				"加载META-INFO/spring.factories文件，设置：initializers、listeners；");
 		// 1、资源初始化资源加载器为 null
 		this.resourceLoader = resourceLoader;
 		// 2、断言主要加载资源类不能为 null，否则报错
@@ -300,6 +303,10 @@ public class SpringApplication {
 	 * @return a running {@link ApplicationContext}
 	 */
 	public ConfigurableApplicationContext run(String... args) {
+		logger.debug("第二步：run方法运行：发布各个事件，首先是SpringApplicationRunListener;" +
+				"然后创建并配置环境；" +
+				"接下来重点创建了AnnotationConfigServletWebServerApplicationContext容器；加载了primarySources到beanFactory，" +
+				"然后调用refresh方法实例化beanDefinition");
 		// 1、创建并启动计时监控类
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
@@ -310,7 +317,7 @@ public class SpringApplication {
 		configureHeadlessProperty();
 		// 4、创建所有 Spring 运行监听器并发布应用启动事件
 		SpringApplicationRunListeners listeners = getRunListeners(args);
-		// 触发启动事件，启动监听器会被调用，一共5个监听器被调用
+		// 触发启动事件，启动监听器会被调用，一共5个监听器被调用，监听器的第一步
 		listeners.starting();
 		try {
 			// 5、参数封装，也就是在命令行下启动应用带的参数，如--server.port=9000
@@ -371,6 +378,7 @@ public class SpringApplication {
 		// 获取或创建环境
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
+		// 监听器的第二步
 		listeners.environmentPrepared(environment);
 		bindToSpringApplication(environment);
 		if (!this.isCustomEnvironment) {
@@ -425,7 +433,7 @@ public class SpringApplication {
 		// 获取全部资源，其实就一个：SpringApplication的primarySources属性
 		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
-		// 将bean加载到应用上下文中
+		// 将bean加载到应用上下文中,load就是加载配置的类
 		load(context, sources.toArray(new Object[0]));
 		// 向上下文中添加ApplicationListener，并广播ApplicationPreparedEvent事件
 		listeners.contextLoaded(context);
@@ -757,6 +765,7 @@ public class SpringApplication {
 			logger.debug(
 					"Loading source " + StringUtils.arrayToCommaDelimitedString(sources));
 		}
+		// 这里是创建bean读取器的地方，重点
 		BeanDefinitionLoader loader = createBeanDefinitionLoader(getBeanDefinitionRegistry(context), sources);
 		if (this.beanNameGenerator != null) {
 			loader.setBeanNameGenerator(this.beanNameGenerator);
@@ -767,6 +776,7 @@ public class SpringApplication {
 		if (this.environment != null) {
 			loader.setEnvironment(this.environment);
 		}
+		// 具体加载BeanDefinition
 		loader.load();
 	}
 
